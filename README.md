@@ -3,12 +3,15 @@
 > Full stack Django/React/Redux app that uses token based authentication with Knox.
 
 ## Quick Start
-# Python 3.7.6 and node.js installed
+### Python 3.7.6 and node.js installed
 
-### Known Issues 
-#Welcome Page Not create
-#Date is not Entered
-
+## Known Issues 
+### Welcome Page Not create with Box
+### Dashboard page should always be called before newcall, 
+### Newcall page do not load data from DB directly
+### Date is not implemented
+### Calculate is Working only Once, Some state changes has to be fixed
+### Submit is Work In Progress
 
 ##Entry points to GET/POST/PUT/DELETE 4 Tables
 #http://127.0.0.1:8000/datafund/
