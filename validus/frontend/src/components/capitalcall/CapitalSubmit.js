@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Container, Row, Col } from "react-bootstrap";
 import { Form, Button, InputGroup } from "react-bootstrap";
-import insertNewDataCalls from "../../actions/addnewcall";
+import { insertNewDataCalls } from "../../actions/addnewcall";
 
 export class CapitalSubmit extends Component {
   static propTypes = {
