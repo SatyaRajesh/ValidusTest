@@ -1,85 +1,41 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import {
-  getInvestedFunds,
-  getDataFund,
-  getDataCall,
-  getDataCommitment,
-  getUdatedInvStatus,
-} from "../../actions/investedfunds";
+import { getDashboardFunds } from "../../actions/investedfunds";
 
 export class InvestedFunds extends Component {
   static propTypes = {
-    investedfunds: PropTypes.array.isRequired,
-    datacalls: PropTypes.array.isRequired,
-    datafunds: PropTypes.array.isRequired,
-    datacommitments: PropTypes.array.isRequired,
-    isUpdated: PropTypes.bool.isRequired,
+    dashboardfunds: PropTypes.object.isRequired,
+    getDashboardFunds: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
-    this.props.getInvestedFunds();
-    this.props.getDataCall();
-    this.props.getDataFund();
-    this.props.getDataCommitment();
-    //this.props.getUdatedInvStatus();
-  }
-
-  renderHeader() {
-    return this.props.datafunds.map((Dfund) => {
-      return (
-        <th key={Dfund.fund_id}>
-          <p class="text-muted">{Dfund.fund_id}</p>
-          <br />
-          {Dfund.fund_name}
-        </th>
-      );
-    });
-    return;
-  }
-
-  renderFundAmount(call_id, fund_id) {
-    console.log("renderFundAmount CallId:" + call_id + " FundId:" + fund_id);
-    return this.props.investedfunds.map((DInv) => {
-      if (call_id == DInv.call_id && fund_id == DInv.fund_id) {
-        console.log("renderFundAmount Found Amount for " + "FundId:" + fund_id);
-        return <td>{DInv.investment_amount}</td>;
-      } else {
-        console.log(
-          "renderFundAmount No Found Amount for " + "FundId:" + fund_id
-        );
-        return <td>-</td>;
-      }
-    });
-    return;
-  }
-
-  renderFunds(call_id) {
-    console.log("renderFunds CallId:" + call_id);
-    return this.props.datafunds.map((Dfund) => {
-      return this.renderFundAmount(call_id, Dfund.fund_id);
-    });
-    return;
+    console.log("InvestedFunds ComponentDMount");
+    this.props.getDashboardFunds();
   }
 
   render() {
     return (
       <Fragment>
-        <table className="table table-stripped" key="datacall_dashboard">
+        <table
+          className="w-50 table table-stripped table-sm"
+          key="datacall_dashboard"
+        >
           <thead key="thead">
             <tr key="rowheader">
-              <th key="th1">Date</th>
-              <th key="th2">Call #</th>
-              {this.renderHeader()}
+              {this.props.dashboardfunds.header.map((headerValue) => (
+                <th>{headerValue}</th>
+              ))}
             </tr>
           </thead>
           <tbody key="tbody">
-            {this.props.datacalls.map((Dcall) => (
+            {this.props.dashboardfunds.rows.map((row) => (
               <tr>
-                <td>{Dcall.date}</td>
-                <td>{Dcall.call_id}</td>
-                {this.renderFunds(Dcall.call_id)}
+                <td>{row.date}</td>
+                <td>{row.call_id}</td>
+                {row.funds.map((fundValue) => (
+                  <td>{fundValue}</td>
+                ))}
               </tr>
             ))}
           </tbody>
@@ -90,17 +46,9 @@ export class InvestedFunds extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  investedfunds: state.investedfunds.investedfunds,
-  datacalls: state.investedfunds.datacall,
-  datafunds: state.investedfunds.datafund,
-  datacommitments: state.investedfunds.datacommitment,
-  isUpdated: state.investedfunds.isUpdated,
+  dashboardfunds: state.investedfunds.dashboardfunds,
 });
 
 export default connect(mapStateToProps, {
-  getInvestedFunds,
-  getDataCall,
-  getDataFund,
-  getDataCommitment,
-  getUdatedInvStatus,
+  getDashboardFunds,
 })(InvestedFunds);

@@ -1,62 +1,62 @@
 import React, { Component } from "react";
-import { SingleDatePicker } from "react-dates";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Row, Col } from "react-bootstrap";
-import { addNewCallInv } from "../../actions/addnewcall";
-import {
-  getInvestedFunds,
-  getDataFund,
-  getDataCall,
-  getDataCommitment,
-  getUdatedInvStatus,
-} from "../../actions/investedfunds";
+import { calculateFunds, getCommittedFunds } from "../../actions/addnewcall";
 
 export class CapitalInput extends Component {
-  state = {
-    newInvName: "",
-    newInvAmount: "",
-    newCaclType: "",
-    newInvDate: "",
-    isUpdated: true,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      newInvName: "",
+      newInvAmount: "",
+      newCaclType: "",
+      newInvDate: "",
+    };
+  }
 
   static propTypes = {
-    addNewCallInv: PropTypes.func.isRequired,
-    isUpdated: true,
+    calculateFunds: PropTypes.func.isRequired,
+    getCommittedFunds: PropTypes.func.isRequired,
+    submittedFunds: PropTypes.object,
   };
 
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
   onSubmit = (e) => {
+    console.log("OnSubmit called");
     e.preventDefault();
     const { newInvName, newInvAmount, newCaclType, newInvDate } = this.state;
-    const newInvValue = { newInvName, newInvAmount, newCaclType, newInvDate };
-    this.props.addNewCallInv(newInvValue);
-    console.log("Value of Status:" + this.props.isUpdated);
-    this.props.getUdatedInvStatus(true);
+    let calReqValue = {
+      newInvName,
+      newInvAmount,
+      newCaclType,
+      newInvDate,
+    };
+    this.props.calculateFunds(calReqValue);
     this.setState({
       newInvName: "",
       newInvAmount: "",
       newCaclType: "",
       newInvDate: "",
-      isUpdated: true,
     });
   };
 
   render() {
+    console.log("Capital Input Render");
     const { newInvName, newInvAmount, newCaclType, newInvDate } = this.state;
     return (
-      <div className="card card-body mt-4 mb-4">
+      <div className="card">
         <form onSubmit={this.onSubmit}>
-          <div className="form-group">
+          <div className="form-group form-control-sm">
             <Row>
               <Col>
-                <label>Date</label>
+                <label style={{ fontWeight: "bold" }}>Date</label>
               </Col>
               <Col>
                 <input
-                  type="text"
+                  className="form-control-sm"
+                  type="date"
                   value={newInvDate}
                   onChange={this.onChange}
                   name="newInvDate"
@@ -64,14 +64,14 @@ export class CapitalInput extends Component {
               </Col>
             </Row>
           </div>
-          <div className="form-group">
+          <div className="form-group form-control-sm">
             <Row>
               <Col>
                 <label>Rules</label>
               </Col>
               <Col>
                 <select
-                  class="form-control"
+                  className="form-control-sm"
                   id="sel1"
                   onChange={this.OnChange}
                   name="newCaclType"
@@ -81,13 +81,14 @@ export class CapitalInput extends Component {
               </Col>
             </Row>
           </div>
-          <div className="form-group">
+          <div className="form-group form-control-sm">
             <Row>
               <Col>
                 <label>Investment Name</label>
               </Col>
               <Col>
                 <input
+                  className="form-control-sm"
                   type="text"
                   value={newInvName}
                   onChange={this.onChange}
@@ -96,13 +97,14 @@ export class CapitalInput extends Component {
               </Col>
             </Row>
           </div>
-          <div className="form-group">
+          <div className="form-group form-control-sm">
             <Row>
               <Col>
                 <label>Capital Required for Investment</label>
               </Col>
               <Col>
                 <input
+                  className="form-control-sm"
                   type="number"
                   id="inlineFormInputGroup-1"
                   name="newInvAmount"
@@ -128,19 +130,9 @@ export class CapitalInput extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  investedfunds: state.investedfunds.investedfunds,
-  datacalls: state.investedfunds.datacall,
-  datafunds: state.investedfunds.datafund,
-  datacommitments: state.investedfunds.datacommitment,
-  isUpdated: state.investedfunds.isUpdated,
-  newCallAmount: state.addnewcall.newInvAmount,
+  submittedFunds: state.addnewcall.submittedFunds,
 });
 
-export default connect(mapStateToProps, {
-  addNewCallInv,
-  getInvestedFunds,
-  getDataFund,
-  getDataCall,
-  getDataCommitment,
-  getUdatedInvStatus,
-})(CapitalInput);
+export default connect(null, { calculateFunds, getCommittedFunds })(
+  CapitalInput
+);

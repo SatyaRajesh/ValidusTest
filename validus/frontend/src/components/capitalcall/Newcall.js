@@ -3,11 +3,14 @@ import { Container, Row, Col } from "react-bootstrap";
 import CapitalInput from "./CapitalInput";
 import CapitalSubmit from "./CapitalSubmit";
 import CapitalPlan from "./CapitalPlan";
+import Header from "../layout/Header";
 
 export class Newcall extends Component {
   render() {
+    console.log("New Call Component Render");
     return (
       <Fragment>
+        <Header />
         <Container>
           <Row>
             <Col>
@@ -18,7 +21,9 @@ export class Newcall extends Component {
             </Col>
           </Row>
           <Row>
-            <CapitalSubmit />
+            <Col>
+              <CapitalSubmit />
+            </Col>
           </Row>
         </Container>
       </Fragment>

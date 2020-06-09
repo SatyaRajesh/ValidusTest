@@ -1,21 +1,15 @@
-import { ADD_NEW_CALL_INV, LOAD_CALL_VALUES } from "../actions/types.js";
+import { SUBMITTED_FUNDS } from "../actions/types.js";
 
 const initialState = {
-  newcallInv: [],
-  insertCallValues: [],
+  submittedFunds: { commits: [], calcVal: [], fundwiseTotal: [] },
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case ADD_NEW_CALL_INV:
+    case SUBMITTED_FUNDS:
       return {
         ...state,
-        newcallInv: action.payload,
-      };
-    case LOAD_CALL_VALUES:
-      return {
-        ...state,
-        insertCallValues: action.payload,
+        submittedFunds: action.payload,
       };
     default:
       return state;
