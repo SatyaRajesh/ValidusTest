@@ -12,6 +12,18 @@ export const calculateFunds = (calReqValue) => (dispatch, getState) => {
       console.log("submitted Funds:" + JSON.stringify(submitttedValues));
 
       let Amount = calReqValue.newInvAmount;
+
+      let total = 0;
+      for (let i = 0; i < submitttedValues.length; i++) {
+        total += parseInt(submitttedValues[i].amount) || 0;
+      }
+
+      console.log("Total Funds" + total);
+
+      if (Amount > total) {
+        Amount = 0;
+      }
+
       console.log(" Amount:" + Amount);
       for (let i = 0; i < submitttedValues.length; i++) {
         console.log("Working on CommiID:" + submitttedValues[i].commitId);
@@ -59,7 +71,12 @@ export const calculateFunds = (calReqValue) => (dispatch, getState) => {
             mytotalfunds += parseInt(eachCommitRec.investedAmt) || 0;
           }
         }
-        eachfundTotal.totafunds = mytotalfunds;
+
+        if (mytotalfunds > 0) {
+          eachfundTotal.totafunds = mytotalfunds;
+        } else {
+          eachfundTotal.totafunds = "-";
+        }
         console.log(
           "Fund Name:" +
             eachfundTotal.fund_name +
@@ -152,15 +169,71 @@ export const getCommittedFunds = () => (dispatch) => {
 };
 
 // GET DATA COMMITMENT
-export const insertNewDataCalls = (dataCall) => (dispatch) => {
-  console.log("insertNewDataCalls in Actions");
-  axios
-    .put("/datacall/", dataCall)
-    .then((res) => {
-      dispatch({
-        type: GET_DATACOMMITMENT,
-        payload: res.data,
-      });
-    })
-    .catch((err) => console.log(err));
+export const confirmCallDetails = () => (dispatch, getState) => {
+  console.log("inserting New CapitalCall data in action in Actions");
+  const newCallData = getState().addnewcall.submittedFunds;
+
+  let invdate = newCallData.calcVal.newInvAmount;
+  //let invdate = Date.parse(newCallData.calcVal.newInvDate) || 0;
+  let today = new Date();
+  today = today.toISOString().substring(0, 10);
+  //Add Logic to stop entering future date
+  //if (!invdate || invdate > today) {
+  if (!invdate || today > invdate) {
+    invdate = today;
+  }
+  let investmentName = newCallData.calcVal.newInvName;
+  let capitalRequiement = parseInt(newCallData.calcVal.newInvAmount) || 0;
+
+  if (capitalRequiement > 0) {
+    let NewCallobj = {
+      date: invdate,
+      investment_name: investmentName,
+      capital_requiement: capitalRequiement,
+    };
+
+    console.log("Request Data:" + JSON.stringify(NewCallobj));
+
+    axios
+      .post("/datacall/", NewCallobj)
+      .then((res) => {
+        let newCallRes = res.data;
+        console.log("Inserted DataCall:" + newCallRes);
+
+        let newCallId = parseInt(newCallRes.call_id) || 0;
+
+        for (let k = 0; k < newCallData.commits.length; k++) {
+          let commitmentDataInvestment = newCallData.commits[k];
+          let newDataInvRes = {};
+          let amount = parseInt(commitmentDataInvestment.investedAmt) || 0;
+          if (amount > 0) {
+            let newDataInvobj = {
+              call_id: newCallId,
+              commitment_id: commitmentDataInvestment.commitId,
+              fund_id: commitmentDataInvestment.fund_id,
+              investment_amount: amount,
+            };
+
+            console.log(
+              "Request Data Investment:" + JSON.stringify(newDataInvobj)
+            );
+
+            axios
+              .post("/datafundinvestment/", newDataInvobj)
+              .then((res) => {
+                newDataInvRes = res.data;
+                console.log("Inserted DataFundInvestment:" + newDataInvRes);
+              })
+              .catch((err) => console.log(err));
+          } else {
+            console.log(
+              "Error while inserting datafundinvestment, Invalid Amount of investment"
+            );
+          }
+        }
+      })
+      .catch((err) => console.log(err));
+  } else {
+    console.log("Invlid Amount Specified While Inserting DataCall");
+  }
 };

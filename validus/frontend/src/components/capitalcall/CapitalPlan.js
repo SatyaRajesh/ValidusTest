@@ -23,27 +23,33 @@ export class CapitalPlan extends Component {
         <table className="table table-stripped table-sm" key="datacall_newcall">
           <thead>
             <tr key="CPTHead">
-              <th>Commitment_ID</th>
-              <th>Fund_ID</th>
-              <th>Date</th>
-              <th>Fund</th>
-              <th>Commited Amounts</th>
-              <th>Undrawn Capital Commitment before Current Drawdown Notice</th>
-              <th>Total Drawdown Notice</th>
-              <th>Undrawn Capital Commitment after Current Drawdown Notice</th>
+              <th style={{ fontWeight: "normal" }}>Commitment_ID</th>
+              <th style={{ fontWeight: "normal" }}>Fund_ID</th>
+              <th style={{ fontWeight: "normal" }}>Date</th>
+              <th style={{ fontWeight: "normal" }}>Fund</th>
+              <th style={{ fontWeight: "normal" }}>Commited Amounts</th>
+              <th style={{ fontWeight: "normal" }}>
+                Undrawn Capital Commitment before Current Drawdown Notice
+              </th>
+              <th className="bg-warning" style={{ fontWeight: "normal" }}>
+                Total Drawdown Notice
+              </th>
+              <th className="bg-warning" style={{ fontWeight: "normal" }}>
+                Undrawn Capital Commitment after Current Drawdown Notice
+              </th>
             </tr>
           </thead>
           <tbody>
             {this.props.submittedFunds.commits.map((fund) => (
               <tr key={fund.commitId}>
-                <td>{fund.commitId}</td>
-                <td>{fund.fund_id}</td>
+                <td style={{ fontWeight: "bold" }}>{fund.commitId}</td>
+                <td style={{ fontWeight: "bold" }}>{fund.fund_id}</td>
                 <td>{fund.date}</td>
                 <td>{fund.fundname}</td>
                 <td>{fund.amount}</td>
                 <td>{fund.availAmt}</td>
-                <td>{fund.investedAmt}</td>
-                <td>{fund.uninvestedAmt}</td>
+                <td className="bg-warning">{fund.investedAmt}</td>
+                <td className="bg-warning">{fund.uninvestedAmt}</td>
               </tr>
             ))}
           </tbody>

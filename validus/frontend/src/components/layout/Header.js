@@ -19,7 +19,7 @@ export class Header extends Component {
           className="w-25 flex-grow-1 collapse navbar-collapse"
           id="navbarTogglerDemo01"
         >
-          <a className="navbar-brand justify-content-start">
+          <a className="navbar-brand justify-content-start" href="/">
             <img
               alt="Validus"
               src="../../static/img/ValidusImg.png"
@@ -29,7 +29,7 @@ export class Header extends Component {
           </a>
         </div>
         <div className="w-50 justify-content-start text-center">
-          <div className="w-25 font-weight-bold border bg-info text-dark ">
+          <div className="w-50 font-weight-bold bg-primary border text-dark">
             Capital Call
           </div>
         </div>

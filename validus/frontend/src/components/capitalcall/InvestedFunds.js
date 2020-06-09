@@ -24,7 +24,7 @@ export class InvestedFunds extends Component {
           <thead key="thead">
             <tr key="rowheader">
               {this.props.dashboardfunds.header.map((headerValue) => (
-                <th>{headerValue}</th>
+                <th key={headerValue}>{headerValue}</th>
               ))}
             </tr>
           </thead>

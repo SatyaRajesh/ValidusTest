@@ -27,6 +27,7 @@ export class CapitalInput extends Component {
     console.log("OnSubmit called");
     e.preventDefault();
     const { newInvName, newInvAmount, newCaclType, newInvDate } = this.state;
+    console.log("Date Inserted:" + newInvDate);
     let calReqValue = {
       newInvName,
       newInvAmount,
@@ -34,19 +35,13 @@ export class CapitalInput extends Component {
       newInvDate,
     };
     this.props.calculateFunds(calReqValue);
-    this.setState({
-      newInvName: "",
-      newInvAmount: "",
-      newCaclType: "",
-      newInvDate: "",
-    });
   };
 
   render() {
     console.log("Capital Input Render");
     const { newInvName, newInvAmount, newCaclType, newInvDate } = this.state;
     return (
-      <div className="card">
+      <div className="card form-control-sm">
         <form onSubmit={this.onSubmit}>
           <div className="form-group form-control-sm">
             <Row>
@@ -67,7 +62,7 @@ export class CapitalInput extends Component {
           <div className="form-group form-control-sm">
             <Row>
               <Col>
-                <label>Rules</label>
+                <label style={{ fontWeight: "bold" }}>Rules</label>
               </Col>
               <Col>
                 <select
@@ -84,7 +79,7 @@ export class CapitalInput extends Component {
           <div className="form-group form-control-sm">
             <Row>
               <Col>
-                <label>Investment Name</label>
+                <label style={{ fontWeight: "bold" }}>Investment Name</label>
               </Col>
               <Col>
                 <input
@@ -100,13 +95,15 @@ export class CapitalInput extends Component {
           <div className="form-group form-control-sm">
             <Row>
               <Col>
-                <label>Capital Required for Investment</label>
+                <label style={{ fontWeight: "bold" }}>
+                  Capital Required for Investment
+                </label>
               </Col>
               <Col>
                 <input
-                  className="form-control-sm"
                   type="number"
-                  id="inlineFormInputGroup-1"
+                  className="form-group form-control-sm"
+                  id="inlineFormInputGroup"
                   name="newInvAmount"
                   value={newInvAmount}
                   onChange={this.onChange}
@@ -133,6 +130,6 @@ const mapStateToProps = (state) => ({
   submittedFunds: state.addnewcall.submittedFunds,
 });
 
-export default connect(null, { calculateFunds, getCommittedFunds })(
+export default connect(mapStateToProps, { calculateFunds, getCommittedFunds })(
   CapitalInput
 );

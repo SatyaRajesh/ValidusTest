@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import WelcomeHeader from "../layout/WelcomeHeader";
 
 const Welcome = (props) => {
-  function goToCapitalPage() {
+  function goToCallCapitalPage() {
     console.log("Clicked Capital Call");
     props.history.push("ccdashboard");
   }
@@ -18,7 +18,7 @@ const Welcome = (props) => {
               className="btn btn-primary"
               height="100"
               width="250"
-              onClick={goToCapitalPage}
+              onClick={goToCallCapitalPage}
             >
               Capital Call
             </button>

@@ -57,7 +57,7 @@ export const getDashboardFunds = () => (dispatch) => {
               dynFunds.push("-");
             }
             if (!headerDone) {
-              rowHeader.push(dfund.fund_name);
+              rowHeader.push(dfund.fund_id + "->" + dfund.fund_name);
             }
           }
           rowObj.funds = dynFunds;
