@@ -32,6 +32,6 @@ npm run build
 
 # Serve API on localhost:8000
 pipenv shell
-python leadmanager/manage.py runserver
+python validus/manage.py runserver
 
 ```
