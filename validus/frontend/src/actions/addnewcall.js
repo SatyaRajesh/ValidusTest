@@ -29,6 +29,7 @@ export const calculateFunds = (calReqValue) => (dispatch, getState) => {
       console.log("Total Funds" + total);
 
       if (Amount > total) {
+        alert("Provided Amount Exceeeded Total available limit");
         Amount = 0;
       }
 
@@ -184,11 +185,15 @@ export const confirmCallDetails = () => (dispatch, getState) => {
     if(invdate > today){
       invdate = today;
     }
+    else {
+      invdate = invdate.toISOString().substring(0, 10); 
+    }
   }
   else{
     today = new Date();
     invdate = today.toISOString().substring(0, 10);
   }
+
 
   let investmentName = newCallData.calcVal.newInvName;
   let capitalRequiement = parseInt(newCallData.calcVal.newInvAmount) || 0;
@@ -245,7 +250,8 @@ export const confirmCallDetails = () => (dispatch, getState) => {
         }
         })
       .catch((err) => console.log(err));
-  } else {
+      alert("Success!!! Inserted New Capital Call Investement");
+    } else {
     console.log("Invlid Amount Specified While Inserting DataCall");
   }
 };
