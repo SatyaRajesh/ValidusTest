@@ -26,7 +26,7 @@ export class CapitalSubmit extends Component {
     e.preventDefault();
     this.props.confirmCallDetails();
     console.log("Call Details Added");
-    props.history.push("ccdashboard");
+    this.props.getCommittedFunds();
   };
 
   render() {
