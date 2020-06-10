@@ -2,7 +2,7 @@
 
 > Full stack Django/React/Redux app that uses axios to communicate between backend and frontend
 
-##Unit test
+## Unit test
 
 Backend: Provided a basic overview scenarios for unit testing both the end point API's and also with Models.
 Frontend: Frontend automation can be done with selenium webdriver to tests work flow of the case study. 
