@@ -173,18 +173,29 @@ export const confirmCallDetails = () => (dispatch, getState) => {
   console.log("inserting New CapitalCall data in action in Actions");
   const newCallData = getState().addnewcall.submittedFunds;
 
-  let invdate = newCallData.calcVal.newInvAmount;
-  //let invdate = Date.parse(newCallData.calcVal.newInvDate) || 0;
+   console.log("Input Data:"+JSON.stringify(newCallData));
+
+  let invdate = Date.parse(newCallData.calcVal.newInvDate);
   let today = new Date();
-  today = today.toISOString().substring(0, 10);
-  //Add Logic to stop entering future date
-  //if (!invdate || invdate > today) {
-  if (!invdate || today > invdate) {
-    invdate = today;
+  if (isNaN(invdate) == false)
+  {
+    invdate = new Date(invdate);
+    if(invdate > today){
+      invdate = today;
+    }
   }
+  else{
+    today = new Date();
+    invdate = today.toISOString().substring(0, 10);
+  }
+
   let investmentName = newCallData.calcVal.newInvName;
   let capitalRequiement = parseInt(newCallData.calcVal.newInvAmount) || 0;
 
+  if(investmentName==""){
+    investmentName ="ConsideringDefaultInvestment";
+  }
+  
   if (capitalRequiement > 0) {
     let NewCallobj = {
       date: invdate,
@@ -231,7 +242,7 @@ export const confirmCallDetails = () => (dispatch, getState) => {
             );
           }
         }
-      })
+        })
       .catch((err) => console.log(err));
   } else {
     console.log("Invlid Amount Specified While Inserting DataCall");
