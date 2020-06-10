@@ -10,14 +10,14 @@ Frontend: Frontend automation can be done with selenium webdriver to tests work 
 ## Quick Start
 ### Python 3.7.6, pipenv(pip3 install pipenv) and node.js installed
 
-##Entry points to GET/POST/PUT/DELETE 4 Tables
-#http://127.0.0.1:8000/datafund/
-#http://127.0.0.1:8000/datacommitment
-#http://127.0.0.1:8000/datacall/
-#http://127.0.0.1:8000/datafundinvestment/
+## Entry points to GET/POST/PUT/DELETE 4 Tables
+# http://127.0.0.1:8000/datafund/
+# http://127.0.0.1:8000/datacommitment
+# http://127.0.0.1:8000/datacall/
+# http://127.0.0.1:8000/datafundinvestment/
 
-##Entry points to Client/FrontEnd is
-#http://localhost:8000/
+## Entry points to Client/FrontEnd is
+# http://localhost:8000/
 
 ```bash
 # Install dependencies
