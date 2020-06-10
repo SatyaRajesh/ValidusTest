@@ -23,7 +23,7 @@ export const calculateFunds = (calReqValue) => (dispatch, getState) => {
 
       let total = 0;
       for (let i = 0; i < submitttedValues.length; i++) {
-        total +=(submitttedValues[i].amount);
+        total +=( getNumberFromString(submitttedValues[i].amount));
       }
 
       console.log("Total Funds" + total);
@@ -36,7 +36,7 @@ export const calculateFunds = (calReqValue) => (dispatch, getState) => {
       console.log(" Amount:" + Amount);
       for (let i = 0; i < submitttedValues.length; i++) {
         console.log("Working on CommiID:" + submitttedValues[i].commitId);
-        let availbleAmount = submitttedValues[i].availAmt;
+        let availbleAmount = getNumberFromString(submitttedValues[i].availAmt);
         if (availbleAmount <= 0) {
           console.log("Oho fund amount less");
           submitttedValues[i].investedAmt = "-";
