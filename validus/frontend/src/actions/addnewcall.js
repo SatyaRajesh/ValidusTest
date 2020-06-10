@@ -1,6 +1,15 @@
 import axios from "axios";
 import { SUBMITTED_FUNDS } from "./types";
 
+function getNumberFromString(stringNumber){
+  let intValue = Number(stringNumber);
+
+  if( isNaN(intValue) == true){
+    intValue = 0;
+  }
+  return intValue;
+}
+
 // Add New Call Calculation
 export const calculateFunds = (calReqValue) => (dispatch, getState) => {
   axios
@@ -9,13 +18,12 @@ export const calculateFunds = (calReqValue) => (dispatch, getState) => {
       console.log("calculateFunds Called");
       let submitttedValues = getState().addnewcall.submittedFunds.commits;
       let dfunds = res.data;
-      console.log("submitted Funds:" + JSON.stringify(submitttedValues));
 
-      let Amount = calReqValue.newInvAmount;
+      let Amount = getNumberFromString(calReqValue.newInvAmount);
 
       let total = 0;
       for (let i = 0; i < submitttedValues.length; i++) {
-        total += parseInt(submitttedValues[i].amount) || 0;
+        total +=(submitttedValues[i].amount);
       }
 
       console.log("Total Funds" + total);
@@ -27,7 +35,7 @@ export const calculateFunds = (calReqValue) => (dispatch, getState) => {
       console.log(" Amount:" + Amount);
       for (let i = 0; i < submitttedValues.length; i++) {
         console.log("Working on CommiID:" + submitttedValues[i].commitId);
-        let availbleAmount = parseInt(submitttedValues[i].availAmt) || 0;
+        let availbleAmount = submitttedValues[i].availAmt;
         if (availbleAmount <= 0) {
           console.log("Oho fund amount less");
           submitttedValues[i].investedAmt = "-";
@@ -58,17 +66,9 @@ export const calculateFunds = (calReqValue) => (dispatch, getState) => {
         let mytotalfunds = 0;
         for (let k = 0; k < submitttedValues.length; k++) {
           let eachCommitRec = submitttedValues[k];
-          console.log(
-            "commitFund:" + eachCommitRec.fund_id + " dFundId:" + dfund.fund_id
-          );
           if (eachCommitRec.fund_id == dfund.fund_id) {
-            console.log(
-              "InvAmt:" +
-                eachCommitRec.investedAmt +
-                " Parsed:" +
-                parseInt(eachCommitRec.investedAmt)
-            );
-            mytotalfunds += parseInt(eachCommitRec.investedAmt) || 0;
+            let investedAmount = getNumberFromString(eachCommitRec.investedAmt);
+            mytotalfunds += investedAmount;
           }
         }
 
@@ -91,9 +91,6 @@ export const calculateFunds = (calReqValue) => (dispatch, getState) => {
       tableObj.calcVal = calReqValue;
       tableObj.fundwiseTotal = allFundsWiseTotal;
 
-      // console.log(
-      //   "Updating submitted Funds:" + JSON.stringify(submitttedValues)
-      // );
       dispatch({
         type: SUBMITTED_FUNDS,
         payload: tableObj,
@@ -101,6 +98,8 @@ export const calculateFunds = (calReqValue) => (dispatch, getState) => {
     })
     .catch((err) => console.log(err));
 };
+
+
 
 export const getCommittedFunds = () => (dispatch) => {
   axios
@@ -132,16 +131,18 @@ export const getCommittedFunds = () => (dispatch) => {
           }
           row.fundname = fundname;
 
-          row.amount = dcommit.amount;
+          let committedAmount = getNumberFromString(dcommit.amount);
+
+          row.amount = committedAmount;
 
           let unDrawnFunds = 0;
           for (let k = 0; k < dinvfunds.length; k++) {
             if (dinvfunds[k].commitment_id == dcommit.commitment_id) {
-              unDrawnFunds += dinvfunds[k].investment_amount;
+              unDrawnFunds += getNumberFromString(dinvfunds[k].investment_amount);
             }
           }
 
-          let availableFundsAfterDrawn = dcommit.amount - unDrawnFunds;
+          let availableFundsAfterDrawn = committedAmount - unDrawnFunds;
           if (availableFundsAfterDrawn > 0) {
             row.availAmt = availableFundsAfterDrawn;
           } else {
@@ -168,7 +169,7 @@ export const getCommittedFunds = () => (dispatch) => {
     .catch((err) => console.log(err));
 };
 
-// GET DATA COMMITMENT
+// INSERTING DATA INTO TABLES
 export const confirmCallDetails = () => (dispatch, getState) => {
   console.log("inserting New CapitalCall data in action in Actions");
   const newCallData = getState().addnewcall.submittedFunds;
